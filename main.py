@@ -1,6 +1,7 @@
 from trans import *
 from vectorNd import *
 from matrixNd import *
+from matrix2d import *
 # This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
@@ -27,6 +28,11 @@ def main():
     u = Mat.unit(2)
     print(type(u[0][1]))
     print(u)
+    t = Mat2d([[1, 4],
+               [8, 8]])
+    g = t * b
+    print(t)
+    print(type(g))
 
 
 # Press the green button in the gutter to run the script.

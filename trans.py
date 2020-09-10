@@ -1,4 +1,3 @@
-from typing import *
 import vectorNd as Vector
 import matrixNd as Matrix
 
