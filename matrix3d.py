@@ -1,4 +1,3 @@
-from matrixNd import *
 from matrix2d import *
 
 
@@ -7,9 +6,8 @@ class Mat3d(Mat):
         if isinstance(values, Mat):
             if values.size() != 3:
                 raise ValueError()
-            super().__init__(values.values)
-        else:
-            super().__init__(values)
+            values = values.values
+        super().__init__(values)
 
     def __mul__(self, other) -> Union['Mat3d', 'Vector.Vec']:
         res = super().__mul__(other)
@@ -18,11 +16,11 @@ class Mat3d(Mat):
         return res
 
     @staticmethod
-    def unit() -> 'Mat3d':
+    def unit(size=3) -> 'Mat3d':
         return Mat3d(Mat.unit(3))
 
     @staticmethod
-    def zero() -> 'Mat3d':
+    def zero(size=3) -> 'Mat3d':
         return Mat3d(Mat.zero(3))
 
     @staticmethod

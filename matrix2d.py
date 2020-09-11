@@ -6,9 +6,8 @@ class Mat2d(Mat):
         if isinstance(values, Mat):
             if values.size() != 2:
                 raise ValueError()
-            super().__init__(values.values)
-        else:
-            super().__init__(values)
+            values = values.values
+        super().__init__(values)
 
     def __mul__(self, other) -> Union['Mat2d', 'Vector.Vec']:
         res = super().__mul__(other)
@@ -17,11 +16,11 @@ class Mat2d(Mat):
         return res
 
     @staticmethod
-    def unit() -> 'Mat2d':
+    def unit(size=2) -> 'Mat2d':
         return Mat2d(Mat.unit(2))
 
     @staticmethod
-    def zero() -> 'Mat2d':
+    def zero(size=2) -> 'Mat2d':
         return Mat2d(Mat.zero(2))
 
     @staticmethod

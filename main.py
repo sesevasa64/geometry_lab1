@@ -28,11 +28,11 @@ def main():
     u = Mat.unit(2)
     print(type(u[0][1]))
     print(u)
-    t = Mat2d([[1, 4],
-               [8, 8]])
-    g = t * b
-    print(t)
-    print(type(g))
+
+    d2 = Mat2d.unit()
+    r2 = d2 * m
+    print(type(r2))
+
 
 
 # Press the green button in the gutter to run the script.
