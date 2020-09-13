@@ -1,4 +1,5 @@
 from matrix2d import *
+from vector3d import *
 
 
 class Mat3d(Mat):
@@ -9,11 +10,11 @@ class Mat3d(Mat):
             values = values.values
         super().__init__(values)
 
-    def __mul__(self, other) -> Union['Mat3d', 'Vector.Vec']:
+    def __mul__(self, other) -> Union['Mat3d', 'Vec3d']:
         res = super().__mul__(other)
         if isinstance(res, Mat):
             return Mat3d(res)
-        return res
+        return Vec3d(res)
 
     @staticmethod
     def unit(size=3) -> 'Mat3d':

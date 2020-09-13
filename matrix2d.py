@@ -1,4 +1,6 @@
+from math import *
 from matrixNd import *
+from vector2d import *
 
 
 class Mat2d(Mat):
@@ -9,11 +11,11 @@ class Mat2d(Mat):
             values = values.values
         super().__init__(values)
 
-    def __mul__(self, other) -> Union['Mat2d', 'Vector.Vec']:
+    def __mul__(self, other) -> Union['Mat2d', 'Vec2d']:
         res = super().__mul__(other)
         if isinstance(res, Mat):
             return Mat2d(res)
-        return res
+        return Vec2d(res)
 
     @staticmethod
     def unit(size=2) -> 'Mat2d':
@@ -26,7 +28,7 @@ class Mat2d(Mat):
     @staticmethod
     def rotate(angle) -> 'Mat2d':
         return Mat2d([[cos(angle),   sin(angle)],
-                      [-sin(angle)], cos(angle)])
+                      [-sin(angle),  cos(angle)]])
 
     @staticmethod
     def mirror_OY() -> 'Mat2d':

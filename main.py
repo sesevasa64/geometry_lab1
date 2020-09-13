@@ -1,11 +1,9 @@
-from trans import *
-from vectorNd import *
-from matrixNd import *
+import numpy as np
+import matplotlib.pyplot as plt
 from matrix2d import *
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from vectorNd import *
+from vector2d import *
+from vector3d import *
 
 
 def main():
@@ -33,10 +31,17 @@ def main():
     r2 = d2 * m
     print(type(r2))
 
+    n = 8
+    rotate = Mat2d.rotate(pi/4)
+    start = Vec2d([4, 4])
+    points = [start]
+    for i in range(n):
+        points.append(points[i] * rotate)
+    points.append(start)
+    plt.plot(*zip(*points))
+    plt.axis('equal')
+    plt.show()
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

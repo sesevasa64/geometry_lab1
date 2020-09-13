@@ -1,6 +1,4 @@
 from typing import *
-from math import *
-import trans
 import vectorNd as Vector
 
 
@@ -9,6 +7,7 @@ class Mat:
         self.values = values
 
     def __mul__(self, other) -> Union['Mat', 'Vector.Vec']:
+        import trans
         if isinstance(other, Vector.Vec):
             return trans.Trans.vec_mat_multiply(other, self)
         if isinstance(other, Mat):
