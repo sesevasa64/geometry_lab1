@@ -39,15 +39,17 @@ def main():
     #plt.plot(*zip(*points))
     plt.axis('equal')
     #plt.show()
-    n = 8
-    rotate = Mat2d.rotate(pi/4)
-    start = Vec2d([4, 4])
-    p = Polygon(n)
-    p[0] = start
-    for i in range(1, n):
-        p[i] = p[i-1] * rotate
-    f = p.plot()
-    f.show()
+    #n = 8
+    #rotate = Mat2d.rotate(radians(360/n))
+    #start = Vec2d([4, 4])
+    #p = Polygon(n)
+    #p[0] = start
+    #for i in range(1, n):
+    #    p[i] = p[i-1] * rotate
+    #f = p.plot()
+    #f.show()
+    p = Polygon.right(8, Vec2d([4, 4]))
+    p.plot().show()
 
 
 if __name__ == '__main__':

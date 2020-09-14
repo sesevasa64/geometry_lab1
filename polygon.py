@@ -13,10 +13,10 @@ class Polygon:
             res[i] = self[i] * matrix
         return res
 
-    def __getitem__(self, index) -> Vec2d:
+    def __getitem__(self, index: int) -> Vec2d:
         return self.points[index]
 
-    def __setitem__(self, idx, value):
+    def __setitem__(self, idx: int, value: Vec2d):
         self.points[idx] = value
 
     def plot(self):
@@ -27,3 +27,12 @@ class Polygon:
         sp.plot(*zip(*copy))
         sp.axis('equal')
         return fg
+
+    @staticmethod
+    def right(size: int, start: Vec2d):
+        p = Polygon(size)
+        p[0] = start
+        rotate = Mat2d.rotate(radians(360 / size))
+        for i in range(1, size):
+            p[i] = p[i - 1] * rotate
+        return p
