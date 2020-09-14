@@ -1,5 +1,6 @@
 from typing import *
 from vectorNd import *
+from matrix2d import *
 
 
 class Vec2d(Vec):
@@ -16,11 +17,11 @@ class Vec2d(Vec):
     def __sub__(self, other: 'Vec2d') -> 'Vec2d':
         return Vec2d(super().__sub__(other))
 
-    def __mul__(self, other) -> 'Vec2d':
+    def __mul__(self, other: Union['Mat2d', int, float]) -> 'Vec2d':
         return Vec2d(super().__mul__(other))
 
-    def __rmul__(self, other) -> 'Vec2d':
+    def __rmul__(self, other: Union['Mat2d', int, float]) -> 'Vec2d':
         return Vec2d(super().__rmul__(other))
 
-    def __truediv__(self, scalar) -> 'Vec2d':
+    def __truediv__(self, scalar: Union[int, float]) -> 'Vec2d':
         return Vec2d(super().__truediv__(scalar))

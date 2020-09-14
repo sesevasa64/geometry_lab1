@@ -1,4 +1,5 @@
 from typing import *
+from matrixNd import *
 
 
 class Vec:
@@ -17,20 +18,20 @@ class Vec:
     def __sub__(self, other: 'Vec') -> 'Vec':
         return Vec([v1 - v2 for (v1, v2) in zip(self.values, other.values)])
 
-    def __mul__(self, other) -> 'Vec':
+    def __mul__(self, other: Union['Mat', int, float]) -> 'Vec':
         import trans
         import matrixNd as Matrix
         if isinstance(other, Matrix.Mat):
             return trans.Trans.vec_mat_multiply(self, other)
         return Vec([val * other for val in self.values])
 
-    def __rmul__(self, other) -> 'Vec':
+    def __rmul__(self, other: Union['Mat', int, float]) -> 'Vec':
         return Vec([val * other for val in self.values])
 
-    def __truediv__(self, scalar) -> 'Vec':
+    def __truediv__(self, scalar: Union[int, float]) -> 'Vec':
         return Vec([val / scalar for val in self.values])
 
-    def __getitem__(self, index) -> int:
+    def __getitem__(self, index: int) -> int:
         return self.values[index]
 
     def __str__(self) -> str:

@@ -3,26 +3,26 @@ from vector3d import *
 
 
 class Mat3d(Mat):
-    def __init__(self, values: Union[List[List], Mat]):
-        if isinstance(values, Mat):
-            if values.size() != 3:
-                raise ValueError()
-            values = values.values
+    def __init__(self, values: List[List]):
         super().__init__(values)
 
     def __mul__(self, other) -> Union['Mat3d', 'Vec3d']:
         res = super().__mul__(other)
         if isinstance(res, Mat):
-            return Mat3d(res)
+            return Mat3d.fromMat(res)
         return Vec3d(res)
 
     @staticmethod
+    def fromMat(matrix: Mat):
+        return Mat3d(matrix.values)
+
+    @staticmethod
     def unit(size=3) -> 'Mat3d':
-        return Mat3d(Mat.unit(3))
+        return Mat3d.fromMat(Mat.unit(3))
 
     @staticmethod
     def zero(size=3) -> 'Mat3d':
-        return Mat3d(Mat.zero(3))
+        return Mat3d.fromMat(Mat.zero(3))
 
     @staticmethod
     def common(mat2d: 'Mat2d') -> 'Mat3d':

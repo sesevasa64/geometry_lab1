@@ -1,29 +1,28 @@
 from math import *
-from matrixNd import *
 from vector2d import *
 
 
 class Mat2d(Mat):
-    def __init__(self, values: Union[List[List], Mat]):
-        if isinstance(values, Mat):
-            if values.size() != 2:
-                raise ValueError()
-            values = values.values
+    def __init__(self, values: List[List]):
         super().__init__(values)
 
     def __mul__(self, other) -> Union['Mat2d', 'Vec2d']:
         res = super().__mul__(other)
         if isinstance(res, Mat):
-            return Mat2d(res)
+            return Mat2d.fromMat(res)
         return Vec2d(res)
 
     @staticmethod
+    def fromMat(matrix: Mat):
+        return Mat2d(matrix.values)
+
+    @staticmethod
     def unit(size=2) -> 'Mat2d':
-        return Mat2d(Mat.unit(2))
+        return Mat2d.fromMat(Mat.unit(2))
 
     @staticmethod
     def zero(size=2) -> 'Mat2d':
-        return Mat2d(Mat.zero(2))
+        return Mat2d.fromMat(Mat.zero(2))
 
     @staticmethod
     def rotate(angle) -> 'Mat2d':

@@ -4,6 +4,7 @@ from matrix2d import *
 from vectorNd import *
 from vector2d import *
 from vector3d import *
+from polygon import *
 
 
 def main():
@@ -31,16 +32,22 @@ def main():
     r2 = d2 * m
     print(type(r2))
 
+    #points = [start]
+    #for i in range(n):
+    #    points.append(points[i] * rotate)
+    #points.append(start)
+    #plt.plot(*zip(*points))
+    plt.axis('equal')
+    #plt.show()
     n = 8
     rotate = Mat2d.rotate(pi/4)
     start = Vec2d([4, 4])
-    points = [start]
-    for i in range(n):
-        points.append(points[i] * rotate)
-    points.append(start)
-    plt.plot(*zip(*points))
-    plt.axis('equal')
-    plt.show()
+    p = Polygon(n)
+    p[0] = start
+    for i in range(1, n):
+        p[i] = p[i-1] * rotate
+    f = p.plot()
+    f.show()
 
 
 if __name__ == '__main__':
