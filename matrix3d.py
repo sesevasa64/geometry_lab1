@@ -17,11 +17,11 @@ class Mat3d(Mat):
         return Mat3d(matrix.values)
 
     @staticmethod
-    def unit(size=3) -> 'Mat3d':
+    def unit() -> 'Mat3d':
         return Mat3d.fromMat(Mat.unit(3))
 
     @staticmethod
-    def zero(size=3) -> 'Mat3d':
+    def zero() -> 'Mat3d':
         return Mat3d.fromMat(Mat.zero(3))
 
     @staticmethod
@@ -31,6 +31,10 @@ class Mat3d(Mat):
             for j in range(mat2d.column()):
                 res[i][j] = mat2d[i][j]
         return res
+
+    @staticmethod
+    def rotate(angle) -> 'Mat3d':
+        return Mat3d.common(Mat2d.rotate(angle))
 
     @staticmethod
     def parallel(k, _l) -> 'Mat3d':

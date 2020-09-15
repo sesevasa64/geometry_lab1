@@ -1,5 +1,6 @@
 from math import *
 from vector2d import *
+from matrixNd import *
 
 
 class Mat2d(Mat):

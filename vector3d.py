@@ -1,5 +1,5 @@
 from typing import *
-from vectorNd import *
+from vector2d import *
 from matrix3d import *
 
 
@@ -25,3 +25,6 @@ class Vec3d(Vec):
 
     def __truediv__(self, scalar: Union[int, float]) -> 'Vec3d':
         return Vec3d(super().__truediv__(scalar))
+
+    def to2d(self):
+      return Vec2d([self[0], self[1]])
