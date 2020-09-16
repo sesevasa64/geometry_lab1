@@ -1,6 +1,6 @@
 from typing import *
 from vector2d import *
-from matrix3d import *
+import matrix3d as m3d
 
 
 class Vec3d(Vec):
@@ -13,13 +13,13 @@ class Vec3d(Vec):
     def __sub__(self, other: 'Vec3d') -> 'Vec3d':
         return self._sub(other)
 
-    def __mul__(self, other: Union['Mat3d', float]) -> 'Vec3d':
-        if isinstance(other, Mat3d):
+    def __mul__(self, other: Union['m3d.Mat3d', float]) -> 'Vec3d':
+        if isinstance(other, m3d.Mat3d):
             return self._mul_matrix(other)
         return self._mul_scalar(other)
 
-    def __rmul__(self, other: Union['Mat3d', float]) -> 'Vec3d':
-        if isinstance(other, Mat3d):
+    def __rmul__(self, other: Union['m3d.Mat3d', float]) -> 'Vec3d':
+        if isinstance(other, m3d.Mat3d):
             return self._mul_matrix(other)
         return self._mul_scalar(other)
 

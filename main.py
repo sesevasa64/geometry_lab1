@@ -71,12 +71,13 @@ def main():
     # fig += p1
     # fig.show()
 
-    # tri = Mat3d([[2, 1, 4],
-    #              [7, 2, 3],
-    #              [7, 5, 5]])
-    # print(tri.triangular())
-    # print(tri.det())
-    # print(tri.inverse())
+    tri = Mat3d([[2, 1, 4],
+                 [7, 2, 3],
+                 [7, 5, 5]])
+    print(tri.triangular())
+    print(tri.det())
+    print(tri.inverse())
+    print(tri * tri.inverse())
 
     # v = Vec2d(1, 2)
     # v2 = v/5

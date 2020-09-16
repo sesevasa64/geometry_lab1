@@ -1,13 +1,13 @@
 from matrix2d import *
-from vector3d import *
+import vector3d as v3d
 
 
 class Mat3d(Mat):
     def __init__(self, values: List[List[float]]):
         super().__init__(values)
 
-    def __mul__(self, other) -> Union['Mat3d', 'Vec3d']:
-        if isinstance(other, Vec3d):
+    def __mul__(self, other) -> Union['Mat3d', 'v3d.Vec3d']:
+        if isinstance(other, v3d.Vec3d):
             return self._mul_vector(other)
         return self._mul_matrix(other)
 

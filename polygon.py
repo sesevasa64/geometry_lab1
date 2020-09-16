@@ -29,7 +29,6 @@ class Polygon:
         c = self.points.copy()  # костыль
         c.append(self[0])  # костыль
         res = [[x[0], x[1]] for x in c]  # костыль
-        print(*res)
         return zip(*res)
 
     @staticmethod

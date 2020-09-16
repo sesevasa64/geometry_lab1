@@ -98,20 +98,17 @@ class Mat:
             (c[i], c[index]) = (c[index], c[i])
             (r[i], r[index]) = (r[index], r[i])
             tmp = c[i][i]
-            c[i] = [c[i][t] / tmp for t in range(c.column())]
-            r[i] = [r[i][t] / tmp for t in range(r.column())]
-            # print(f'i = {i}')
-            # print(c[i], end=' ')
-            # print(r[i])
+            for g in range(c.row()):
+                for p in range(c.row()):
+                    c[g][p] /= tmp
+                    r[g][p] /= tmp
+            # c[i] = [c[i][t] / tmp for t in range(c.column())]
+            # r[i] = [r[i][t] / tmp for t in range(r.column())]
             j = (i + 1) % c.row()
             while j != i:
-                # print(f'j = {j}')
                 for t in range(c.row()):
                     tmp = c[j][t]
                     c[j][t] = -tmp * c[i][t] + tmp
                     r[j][t] = -tmp * r[i][t] + r[j][t]
-                # print(c[j], end=' ')
-                # print(r[j])
-                # print('------------')
                 j = (j + 1) % c.row()
         return r
