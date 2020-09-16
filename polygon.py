@@ -5,7 +5,7 @@ from matrix3d import *
 
 class Polygon:
     def __init__(self, size: int):
-        self.points = [Vec3d([0, 0, 0])] * size
+        self.points = [Vec3d(0, 0, 0)] * size
 
     def __mul__(self, matrix: Mat3d) -> 'Polygon':
         res = Polygon(len(self.points))
@@ -26,9 +26,10 @@ class Polygon:
         self.points[idx] = value
 
     def as_xy(self):
-        copy = self.points.copy()  # костыль
-        copy.append(self[0])  # костыль
-        res = [x.to2d() for x in copy]  # костыль
+        c = self.points.copy()  # костыль
+        c.append(self[0])  # костыль
+        res = [[x[0], x[1]] for x in c]  # костыль
+        print(*res)
         return zip(*res)
 
     @staticmethod

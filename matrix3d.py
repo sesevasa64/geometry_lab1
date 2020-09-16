@@ -3,26 +3,21 @@ from vector3d import *
 
 
 class Mat3d(Mat):
-    def __init__(self, values: List[List]):
+    def __init__(self, values: List[List[float]]):
         super().__init__(values)
 
     def __mul__(self, other) -> Union['Mat3d', 'Vec3d']:
-        res = super().__mul__(other)
-        if isinstance(res, Mat):
-            return Mat3d.fromMat(res)
-        return Vec3d(res)
-
-    @staticmethod
-    def fromMat(matrix: Mat):
-        return Mat3d(matrix.values)
+        if isinstance(other, Vec3d):
+            return self._mul_vector(other)
+        return self._mul_matrix(other)
 
     @staticmethod
     def unit() -> 'Mat3d':
-        return Mat3d.fromMat(Mat.unit(3))
+        return Mat3d(Mat3d._unit(3))
 
     @staticmethod
     def zero() -> 'Mat3d':
-        return Mat3d.fromMat(Mat.zero(3))
+        return Mat3d(Mat3d._zero(3))
 
     @staticmethod
     def common(mat2d: 'Mat2d') -> 'Mat3d':
@@ -33,25 +28,32 @@ class Mat3d(Mat):
         return res
 
     @staticmethod
-    def rotate(angle) -> 'Mat3d':
+    def rotate(angle: float) -> 'Mat3d':
         return Mat3d.common(Mat2d.rotate(angle))
 
     @staticmethod
-    def parallel(k, _l) -> 'Mat3d':
+    def parallel(k: float, _l: float) -> 'Mat3d':
         res = Mat3d.unit()
         res[0][2] = k
         res[1][2] = _l
         return res
 
     @staticmethod
-    def scale(s) -> 'Mat3d':
+    def scale(s: float) -> 'Mat3d':
         res = Mat3d.unit()
         res[2][2] = s
         return res
 
     @staticmethod
-    def project(p, q) -> 'Mat3d':
+    def project(p: float, q: float) -> 'Mat3d':
         res = Mat3d.unit()
         res[2][0] = p
         res[2][1] = q
+        return res
+
+    @staticmethod
+    def rotate_around_point(angle: float, k: float, _l: float) -> 'Mat3d':
+        res = Mat3d.common(Mat2d.rotate(angle))
+        res[0][2] = k
+        res[1][2] = _l
         return res
