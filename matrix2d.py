@@ -4,13 +4,36 @@ from matrixNd import *
 
 
 class Mat2d(Mat):
+    data_type = Vec2d
+
     def __init__(self, values: List[List[float]]):
         super().__init__(values)
 
-    def __mul__(self, other) -> Union['Mat2d', 'Vec2d']:
+    def __mul__(self, other: Union['Mat2d', 'Vec2d', float]) -> Union['Mat2d', 'Vec2d']:
+        return self._mul(other)
+
+    def __rmul__(self, other: Union['Mat2d', 'Vec2d', float]) -> Union['Mat2d', 'Vec2d']:
+        return self._mul(other)
+
+    def __truediv__(self, scalar: float):
+        return self._mul(1 / scalar)
+
+    def __add__(self, mat: 'Mat2d'):
+        return self._add(mat)
+
+    def __sub__(self, mat: 'Mat2d'):
+        return self._sub(mat)
+
+    def _mul(self, other: Union['Mat2d', float]):
         if isinstance(other, Vec2d):
             return self._mul_vector(other)
-        return self._mul_matrix(other)
+        if isinstance(other, Mat2d):
+            return self._mul_matrix(other)
+        if isinstance(other, Mat) and other.row() == 2:
+            return self._mul_matrix(other)
+        if isinstance(other, float):
+            return self._mul_scalar(other)
+        return NotImplemented
 
     @staticmethod
     def unit() -> 'Mat2d':

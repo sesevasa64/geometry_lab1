@@ -12,16 +12,18 @@ def main():
     a = Vec(1, 2)
     b = Mat([[3, 4],
              [5, 6]])
-    print(a)
-    print(3 * a)
-    print(a + Vec(3, 4))
-    print(b)
+    print(f"a = {a}")
+    print(f"3 * a = {3 * a}")
+    print(f"a + Vec(3, 4) = {a + Vec(3, 4)}")
+    print(f"b = {b}")
     print(f"b * a = {b * a}")
     print(f"a * b = {a * b}")
     m = Mat([[1, 0],
              [0, 1]])
     n = Mat([[1, 2],
              [3, 4]])
+    print(f"m = {n}")
+    print(f"m = {m}")
     print(f"m * n = {m * n}")
     u = Mat.unit(2)
     print(f'Unit(2x2) = {u}')
@@ -29,9 +31,11 @@ def main():
     d2 = Mat2d.unit()
     print(f"d2 = {d2}")
     r2 = d2 * m
+    print(type(d2))
+    print(type(r2))
     print(f'd2 * m = {r2}')
 
-    p = Polygon.right(5, Vec3d(4, 4, 1))
+    p = Polygon.right(6, Vec3d(4, 4, 1))
 
     f = Figure()
     f += p
@@ -71,9 +75,9 @@ def main():
     # fig += p1
     # fig.show()
 
-    tri = Mat3d([[2, 1, 4],
-                 [7, 2, 3],
-                 [7, 5, 5]])
+    tri = Mat3d([[2, 2, 3],
+                 [2, 2, 4],
+                 [5, 6, 7]])
     print(tri.triangular())
     print(tri.det())
     print(tri.inverse())
@@ -82,25 +86,37 @@ def main():
     # v = Vec2d(1, 2)
     # v2 = v/5
     # print(type(v2))
+    #print(Mat.data_type)
+    #print(Mat2d.data_type)
+    #print(Mat3d.data_type)
+    #print(Mat.data_type)
 
 
 def foo():
     class A:
-        def __init__(self, a):
-            self.a = a
+        def __mul__(self, other: int):
+            if isinstance(other, int):
+                pass
+            return NotImplemented
 
-        def method(self, a):
-            return self.__class__(a)
+    class B:
+        def __mul__(self, other: A):
+            if isinstance(other, A):
+                print('YEAH1')
+                return
+            return NotImplemented
 
-    class B(A):
-        pass
+        def __rmul__(self, other: A):
+            if isinstance(other, A):
+                print('YEAH2')
+                return
+            return NotImplemented
 
-    b = B(5)
-    c = b.method(10)
-    print(type(c))
-    print(c.a)
+    a = A()
+    b = B()
+    c = a * b
 
 
 if __name__ == '__main__':
     main()
-    # foo()
+    foo()

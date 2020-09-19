@@ -1,5 +1,4 @@
 from typing import *
-import matrixNd as Matrix
 
 
 class Vec:
@@ -7,7 +6,7 @@ class Vec:
         self.values = list(args)
 
     def __str__(self) -> str:
-        return f"Vec{self.values}"
+        return f"Vec{self._format()}"
 
     def __add__(self, other: 'Vec') -> 'Vec':
         return self._add(other)
@@ -15,10 +14,10 @@ class Vec:
     def __sub__(self, other: 'Vec') -> 'Vec':
         return self._sub(other)
 
-    def __mul__(self, other: Union['Matrix.Mat', float]) -> 'Vec':
-        if isinstance(other, Matrix.Mat):
-            return self._mul_matrix(other)
-        return self._mul_scalar(other)
+    def __mul__(self, other: float) -> 'Vec':
+        if isinstance(other, float):
+            return self._mul_scalar(other)
+        return NotImplemented
 
     def __rmul__(self, other: float) -> 'Vec':
         return self._mul_scalar(other)
@@ -43,6 +42,9 @@ class Vec:
         vec.values = values
         return vec
 
+    def _format(self):
+        return [round(x, 2) for x in self.values]
+
     def _add(self, other):
         return self.from_list([v1 + v2 for (v1, v2) in zip(self.values, other.values)])
 
@@ -51,10 +53,6 @@ class Vec:
 
     def _div_scalar(self, scalar: float):
         return self.from_list([val / scalar for val in self.values])
-
-    def _mul_matrix(self, matrix: 'Matrix.Mat'):
-        import trans
-        return self.from_list(trans.Trans.vec_mat_multiply(self, matrix))
 
     def _mul_scalar(self, scalar: float):
         return self.from_list([val * scalar for val in self.values])

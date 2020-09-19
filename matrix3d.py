@@ -3,13 +3,36 @@ import vector3d as v3d
 
 
 class Mat3d(Mat):
+    data_type = v3d.Vec3d
+
     def __init__(self, values: List[List[float]]):
         super().__init__(values)
 
-    def __mul__(self, other) -> Union['Mat3d', 'v3d.Vec3d']:
+    def __mul__(self, other: Union['Mat3d', 'v3d.Vec3d', float]) -> Union['Mat3d', 'v3d.Vec3d']:
+        return self._mul(other)
+
+    def __rmul__(self, other: Union['Mat3d', 'v3d.Vec3d', float]) -> Union['Mat3d', 'v3d.Vec3d']:
+        return self._mul(other)
+
+    def __truediv__(self, scalar: float):
+        return self._mul(1 / scalar)
+
+    def __add__(self, mat: 'Mat3d'):
+        return self._add(mat)
+
+    def __sub__(self, mat: 'Mat3d'):
+        return self._sub(mat)
+
+    def _mul(self, other: Union['Mat3d', float]):
         if isinstance(other, v3d.Vec3d):
             return self._mul_vector(other)
-        return self._mul_matrix(other)
+        if isinstance(other, Mat3d):
+            return self._mul_matrix(other)
+        if isinstance(other, Mat) and other.row() == 3:
+            return self._mul_matrix(other)
+        if isinstance(other, float):
+            return self._mul_scalar(other)
+        return NotImplemented
 
     @staticmethod
     def unit() -> 'Mat3d':
