@@ -30,7 +30,7 @@ def f1():
     figure = Figure()
     angle = radians(360/size)
     origin = Polygon.right(size, Vec3d(1, 0, 1))
-    array = []
+    array = [origin]
     #for i in range(1, 7):
     #    poly = origin * Mat3d.parallel(2. * origin[i-1].to2d())
     #    poly *= Mat3d.rotate_around_point(angle, origin[i-1].to2d())
@@ -41,11 +41,16 @@ def f1():
     #        #poly *= Mat3d.rotate_around_point(angle, array[i-1][j-1].to2d())
     #        poly = array[i-1] * Mat3d.rotate_around_point(angle, array[i-1][j-1].to2d())
     #        array.append(poly)
-    for i in range(1, 7):
-        ln = line(origin[i-1], origin[i % 6])
-        r = origin * Mat3d.reflection_around_line(ln)
-        array.append(r)
-    figure += origin
+    #for i in range(1, 7):
+    #    ln = line(origin[i-1], origin[i % 6])
+    #    r = origin * Mat3d.reflection_around_line(ln)
+    #    array.append(r)
+    ln = line(origin[0], origin[1])
+    array.append(origin * Mat3d.reflection_around_line(ln))
+    for i in range(1, 2):
+        ln = line(array[i-1][2], array[i][2])
+        for j in range(2):
+            array.append(array[j] * Mat3d.reflection_around_line(ln))
     figure += array
     figure.show()
 
