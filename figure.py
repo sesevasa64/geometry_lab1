@@ -9,8 +9,12 @@ class Figure:
         self.sp.axis('equal')
         self.poly: List[Polygon] = []
 
-    def __iadd__(self, other: Polygon):
-        self.poly.append(other)
+    def __iadd__(self, other: Union[Polygon, Tuple[Polygon, ...]]):
+        if isinstance(other, Polygon):
+            self.poly.append(other)
+        else:
+            for poly in other:
+                self.poly.append(poly)
         return self
 
     def __isub__(self, other: Polygon):

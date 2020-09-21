@@ -28,7 +28,7 @@ class Polygon:
     def as_xy(self):
         c = self.points.copy()  # костыль
         c.append(self[0])  # костыль
-        res = [[x[0], x[1]] for x in c]  # костыль
+        res = [[x[0] / x[2], x[1] / x[2]] for x in c]  # костыль
         return zip(*res)
 
     @staticmethod

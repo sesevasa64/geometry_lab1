@@ -2,10 +2,12 @@ from matrix2d import *
 import vector3d as v3d
 
 
-class Mat3d(Mat):
+class Mat3d(SquareMat):
     data_type = v3d.Vec3d
 
     def __init__(self, values: List[List[float]]):
+        if not Mat2d.is_Nd(values, 3):
+            raise ValueError()
         super().__init__(values)
 
     def __mul__(self, other: Union['Mat3d', 'v3d.Vec3d', float]) -> Union['Mat3d', 'v3d.Vec3d']:
@@ -36,11 +38,11 @@ class Mat3d(Mat):
 
     @staticmethod
     def unit() -> 'Mat3d':
-        return Mat3d(Mat3d._unit(3))
+        return Mat3d(SquareMat._unit(3))
 
     @staticmethod
     def zero() -> 'Mat3d':
-        return Mat3d(Mat3d._zero(3))
+        return Mat3d(SquareMat._zero(3))
 
     @staticmethod
     def common(mat2d: 'Mat2d') -> 'Mat3d':
@@ -55,10 +57,10 @@ class Mat3d(Mat):
         return Mat3d.common(Mat2d.rotate(angle))
 
     @staticmethod
-    def parallel(k: float, _l: float) -> 'Mat3d':
+    def parallel(point: Vec2d) -> 'Mat3d':
         res = Mat3d.unit()
-        res[0][2] = k
-        res[1][2] = _l
+        res[2][0] = point[0]
+        res[2][1] = point[1]
         return res
 
     @staticmethod
@@ -68,15 +70,28 @@ class Mat3d(Mat):
         return res
 
     @staticmethod
-    def project(p: float, q: float) -> 'Mat3d':
+    def project(point: Vec2d) -> 'Mat3d':
         res = Mat3d.unit()
-        res[2][0] = p
-        res[2][1] = q
+        res[2][0] = point[0]
+        res[2][1] = point[1]
         return res
 
     @staticmethod
-    def rotate_around_point(angle: float, k: float, _l: float) -> 'Mat3d':
+    def rotate_around_point(angle: float, point: Vec2d) -> 'Mat3d':
         res = Mat3d.common(Mat2d.rotate(angle))
-        res[0][2] = k
-        res[1][2] = _l
+        k = point[0] * (1 - cos(angle)) + point[1] * sin(angle)
+        _l = point[1] * (1 - cos(angle)) - point[0] * sin(angle)
+        res[2][0] = k
+        res[2][1] = _l
         return res
+
+    @staticmethod
+    def reflection_around_line(line: Tuple[float, float]):
+        (k, l) = line
+        a = 2 * -atan(k)
+        return Mat3d([[cos(a),   -sin(a),      0],
+                      [-sin(a),  -cos(a),      0],
+                      [l*sin(a), l*(1+cos(a)), 1]])
+
+
+

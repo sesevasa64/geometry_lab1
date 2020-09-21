@@ -1,12 +1,14 @@
 from math import *
 from vector2d import *
-from matrixNd import *
+from square_mat import *
 
 
-class Mat2d(Mat):
+class Mat2d(SquareMat):
     data_type = Vec2d
 
     def __init__(self, values: List[List[float]]):
+        if not Mat2d.is_Nd(values, 2):
+            raise ValueError()
         super().__init__(values)
 
     def __mul__(self, other: Union['Mat2d', 'Vec2d', float]) -> Union['Mat2d', 'Vec2d']:
