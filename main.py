@@ -1,4 +1,5 @@
 import numpy as np
+from random import *
 import matplotlib.pyplot as plt
 from matrix2d import *
 from vectorNd import *
@@ -47,9 +48,12 @@ def f1():
     #    array.append(r)
     ln = line(origin[0], origin[1])
     array.append(origin * Mat3d.reflection_around_line(ln))
-    for i in range(1, 2):
-        ln = line(array[i-1][2], array[i][2])
-        for j in range(2):
+    for i in range(2):
+        idx = randint(0, len(array)-1)
+        p1 = randint(0, size-1)
+        p2 = (p1-1) % size
+        ln = line(array[idx][p1], array[idx][p2])
+        for j in range(len(array)):
             array.append(array[j] * Mat3d.reflection_around_line(ln))
     figure += array
     figure.show()
