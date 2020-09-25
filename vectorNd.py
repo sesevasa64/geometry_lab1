@@ -25,22 +25,24 @@ class Vec:
     def __truediv__(self, scalar: float) -> 'Vec':
         return self._div_scalar(scalar)
 
+    def __eq__(self, other: 'Vec'):
+        return self._eq(other)
+
     def __getitem__(self, index: int) -> float:
         return self.values[index]
 
     def __setitem__(self, index: int, value: float):
         self.values[index] = value
 
+    def __iter__(self):
+        for val in self.values:
+            yield val
+
     def len(self) -> int:
         return len(self.values)
 
     def normie(self) -> 'Vec':
-        return self / self[self.len() - 1]
-
-    def from_list(self, values: List[float]):
-        vec = self.__class__()
-        vec.values = values
-        return vec
+        return self / self[-1]
 
     def _format(self):
         return [round(x, 2) for x in self.values]
@@ -56,3 +58,16 @@ class Vec:
 
     def _mul_scalar(self, scalar: float):
         return self.from_list([val * scalar for val in self.values])
+
+    def _eq(self, other):
+        eps = 0.001
+        for i in range(len(self.values)):
+            if not abs(self[i] - other[i]) < eps:
+                return False
+        return True
+
+    @classmethod
+    def from_list(cls, values: List[float]):
+        vec = cls()
+        vec.values = values
+        return vec

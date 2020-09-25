@@ -46,6 +46,19 @@ class Mat:
             raise ValueError()
         return self._sub(mat)
 
+    def __iter__(self):
+        for val in self.values:
+            yield val
+
+    def __eq__(self, other: 'Mat'):
+        return self._eq(other)
+
+    def _eq(self, other):
+        for i in range(len(self.values)):
+            if self[i] != other[i]:
+                return False
+        return True
+
     def _mul(self, other):
         if isinstance(other, Vector.Vec):
             if self.row() != other.len():
@@ -60,12 +73,6 @@ class Mat:
             return self._mul_scalar(other)
         return NotImplemented
 
-    @classmethod
-    def _empty_mat(cls, row: int):
-        mat = cls([])
-        mat.values = [Mat.data_type()] * row
-        return mat
-
     def _add(self, mat):
         res = Mat._empty_mat(self.row())
         for i in range(res.row()):
@@ -77,11 +84,6 @@ class Mat:
         for i in range(res.row()):
             res[i] = self[i] - mat[i]
         return res
-
-    def _new_vec(self, values: List[float]):
-        vec = self.__class__.data_type()
-        vec.values = values
-        return vec
 
     def _mul_scalar(self, scalar: float):
         mat = self.copy()
@@ -115,6 +117,18 @@ class Mat:
 
     def column(self) -> int:
         return self.values[0].len()
+
+    @classmethod
+    def _new_vec(cls, values: List[float]):
+        vec = cls.data_type()
+        vec.values = values
+        return vec
+
+    @classmethod
+    def _empty_mat(cls, row: int):
+        mat = cls([])
+        mat.values = [Mat.data_type()] * row
+        return mat
 
     @staticmethod
     def is_rectangular(values: List[List[float]]):

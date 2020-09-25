@@ -29,6 +29,9 @@ class Vec3d(Vec):
     def __truediv__(self, scalar: float) -> 'Vec3d':
         return self._div_scalar(scalar)
 
+    def __eq__(self, other: 'Vec3d'):
+        return self._eq(other)
+
     def to2d(self):
         return Vec2d(self[0]/self[2], self[1]/self[2])
 

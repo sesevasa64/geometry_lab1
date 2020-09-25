@@ -33,10 +33,14 @@ class Figure:
 
     def save_fig(self):
         self.plot()
-        self.fig.savefig()
+        self.fig.savefig('fig')
 
     def __getitem__(self, index: int) -> Polygon:
         return self.poly[index]
 
     def __setitem__(self, idx: int, value: Polygon):
         self.poly[idx] = value
+
+    def __iter__(self):
+        for p in self.poly:
+            yield p

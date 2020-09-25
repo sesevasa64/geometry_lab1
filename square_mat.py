@@ -26,6 +26,9 @@ class SquareMat(Mat):
             raise ValueError()
         return self._sub(mat)
 
+    def __eq__(self, other: 'SquareMat'):
+        return self._eq(other)
+
     def _mul(self, other: Union['SquareMat', float]):
         if isinstance(other, Vector.Vec):
             if self.size() != other.len():

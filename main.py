@@ -8,14 +8,22 @@ from vector3d import *
 from polygon import *
 from figure import *
 
+n = 4  # Номер бригады
+size = n + 2  # Количество точек в многоугольнике
+
 
 def line(v1: Vec2d, v2: Vec2d):
     return (v2.y - v1.y) / (v2.x - v1.x), (v2.x * v1.y - v1.x * v2.y) / (v2.x - v1.x)
 
 
 def main():
-    f1()
-    f2()
+    # f1()
+    # f2()
+    # f3_2()
+    # f4()
+    f5()
+    # f5_2()
+    pass
 
 
 def f2():
@@ -25,30 +33,14 @@ def f2():
     print(k, l)
 
 
+# Что-то вроде фрактала
 def f1():
-    n = 4
-    size = n + 2
     figure = Figure()
-    angle = radians(360/size)
     origin = Polygon.right(size, Vec3d(1, 0, 1))
     array = [origin]
-    #for i in range(1, 7):
-    #    poly = origin * Mat3d.parallel(2. * origin[i-1].to2d())
-    #    poly *= Mat3d.rotate_around_point(angle, origin[i-1].to2d())
-    #    array.append(poly)
-    #for i in range(1, 8):
-    #    for j in range(1, 7):
-    #        #poly = array[i-1] * Mat3d.parallel(2. * array[i-1][j-1].to2d())
-    #        #poly *= Mat3d.rotate_around_point(angle, array[i-1][j-1].to2d())
-    #        poly = array[i-1] * Mat3d.rotate_around_point(angle, array[i-1][j-1].to2d())
-    #        array.append(poly)
-    #for i in range(1, 7):
-    #    ln = line(origin[i-1], origin[i % 6])
-    #    r = origin * Mat3d.reflection_around_line(ln)
-    #    array.append(r)
     ln = line(origin[0], origin[1])
     array.append(origin * Mat3d.reflection_around_line(ln))
-    for i in range(2):
+    for i in range(10):
         idx = randint(0, len(array)-1)
         p1 = randint(0, size-1)
         p2 = (p1-1) % size
@@ -59,98 +51,98 @@ def f1():
     figure.show()
 
 
+# Первое задание
+def f3_2():
+    figure = Figure()
+    origin = Polygon.right(size, Vec3d(1, 0, 1))
+    array = [origin]
+    var = 6
+    matrix = [None,  # Отражаем относительно случайной прямой, состоящей из
+                     # двух соседних точек в случайном шестиугольнике
+              None,  # Отражаем относительно случайной точки с случайном шестиугольнике
+              Mat3d.common(Mat2d.mirror_OO()),  # Отражаем относительно начала координат
+              Mat3d.common(Mat2d.mirror_OY()),  # Отражаем относительно Oy
+              Mat3d.common(Mat2d.mirror_45d()),  # Отражаем относительно y = x
+              Mat3d.scale(2)]  # Уменьшаем в 2 раза
+    for i in range(var):
+        idx = randint(0, len(array) - 1)
+        p1 = randint(0, size - 1)
+        p2 = (p1 - 1) % size
+        if i % var == 0:
+            ln = line(array[idx][p1], array[idx][p2])
+            matrix[i] = Mat3d.reflection_around_line(ln)
+        if i % var == 1:
+            matrix[i] = Mat3d.reflection_around_point(array[idx][p1])
+        for j in range(len(array)):
+            array.append(array[j] * matrix[i % var])
+    figure += array
+    figure.show()
+
+
+# Третье задание
+def f4():
+    min_s = 0.1
+    max_s = 5.5
+    step = 0.01
+    origin = Polygon.right(size, Vec3d(1, 0, 1))
+    # rot = origin * Mat3d.rotate(pi/4)
+    # array = [origin, rot]
+    array = [origin]
+    for i in np.arange(min_s, max_s, step):
+        new_p = origin * Mat3d.scale(i)
+        # rot = origin * Mat3d.scale(i+0.025) * Mat3d.rotate(pi/4)
+        for angle in range(30, 3*30, 30):
+            array.append(new_p * Mat3d.rotate(radians(angle)))
+        array.append(new_p)
+        # array.append(rot)
+    figure = Figure()
+    figure += array
+    figure.show()
+
+
+# Непонятно что
+def f5():
+    figure = Figure()
+    origin = Polygon.right(size, Vec3d(1, 0, 1))#* Mat3d.parallel(Vec2d(3, 3))
+    array = [origin]
+    ref_mat = [Mat3d.common(Mat2d.mirror_OX()),
+               Mat3d.common(Mat2d.mirror_OY())]
+    for i in range(10):
+        idx = randint(0, len(array)-1)
+        p = randint(0, 5)
+        angle = randrange(60, 360, 60)
+        matrix = Mat3d.rotate_around_point((radians(angle)), array[idx][p])
+        for j in range(len(array)):
+            array[j] *= matrix
+        for j in range(len(array)):
+            array.append(array[j] * ref_mat[i % len(ref_mat)])
+    figure += array
+    figure.show()
+
+
+# Непонятно что №2
+def f5_2():
+    figure = Figure()
+    origin = Polygon.right(size, Vec3d(1, 0, 1))#* Mat3d.parallel(Vec2d(3, 3))
+    array = [origin]
+    ref_mat = [Mat3d.common(Mat2d.mirror_OX()),
+               Mat3d.common(Mat2d.mirror_OY())]
+    for i in range(10):
+        idx = randint(0, len(array)-1)
+        angle = randrange(60, 360, 60)
+        center = array[idx].center()
+        if center == Vec2d(0, 0):
+            p1 = randint(0, 5)
+            matrix = Mat3d.rotate_around_point((radians(angle)), array[idx][p1])
+        else:
+            matrix = Mat3d.rotate_around_point((radians(angle)), center)
+        for j in range(len(array)):
+            array[j] *= matrix
+        for j in range(len(array)):
+            array.append(array[j] * ref_mat[i % len(ref_mat)])
+    figure += array
+    figure.show()
+
+
 if __name__ == '__main__':
     main()
-
-    # a = Vec(1, 2)
-    # b = Mat([[3, 4],
-    #          [5, 6]])
-    # print(f"a = {a}")
-    # print(f"3 * a = {3 * a}")
-    # print(f"a + Vec(3, 4) = {a + Vec(3, 4)}")
-    # print(f"b = {b}")
-    # print(f"b * a = {b * a}")
-    # print(f"a * b = {a * b}")
-    # m = Mat([[1, 0],
-    #          [0, 1]])
-    # n = Mat([[1, 2],
-    #          [3, 4]])
-    # print(f"m = {n}")
-    # print(f"m = {m}")
-    # print(f"m * n = {m * n}")
-    # u = SquareMat.unit(2)
-    # print(f'Unit(2x2) = {u}')
-
-    # d2 = Mat2d.unit()
-    # print(f"d2 = {d2}")
-    # r2 = d2 * m
-    # print(type(d2))
-    # print(type(r2))
-    # print(f'd2 * m = {r2}')
-
-    # p = Polygon.right(6, Vec3d(4, 4, 1))
-
-    # f = Figure()
-    # f += p
-    # f.show()
-    # points = [start]
-    # for i in range(n):
-    #    points.append(points[i] * rotate)
-    # points.append(start)
-    # plt.plot(*zip(*points))
-    # plt.axis('equal')
-    # plt.show()
-    # n = 8
-    # rotate = Mat2d.rotate(radians(360/n))
-    # start = Vec2d([4, 4])
-    # p = Polygon(n)
-    # p[0] = start
-    # for i in range(1, n):
-    #    p[i] = p[i-1] * rotate
-    # f = p.plot()
-    # f.show()
-    # f = plt.figure()
-    # sp = f.add_subplot(111)
-    # p = Polygon.right(8, Vec3d([4, 4, 0]))
-    # p.plot(sp)
-    # v3d = Vec3d([1, 1, 0])
-    # p1 = Polygon.right(8, Vec3d([2, 2, 1]))
-    # for i in range(20):
-    #    for j in range(10):
-    #        dp = Mat3d.project(i, j)
-    #        (p1 * dp).plot(sp)
-    #        dp = Mat3d.scale(36)
-    #        (p1 * dp).plot(sp)
-    # f.savefig("foo.png")
-    # f.show()
-    # fig = Figure()
-    # p1 = Polygon.right(8, Vec3d(4, 4, 1))
-    # fig += p1
-    # fig.show()
-
-    # tri = Mat3d([[2, 2, 3],
-    #              [2, 2, 4],
-    #              [5, 6, 7]])
-    # print(tri.triangular())
-    # print(tri.det())
-    # print(tri.inverse())
-    # print(tri * tri.inverse())
-
-    # res = Mat([])
-    # res.values = [Vec()]*4
-    # res[0] = Vec(1)
-    # print(res)
-    # m1 = SquareMat.unit(2)
-    # print(m1)
-    # m2 = m1.copy()
-    # m1[0][0] = 2
-    # print(m1)
-    # print(m2)
-
-    # v = Vec2d(1, 2)
-    # v2 = v/5
-    # print(type(v2))
-    # print(Mat.data_type)
-    # print(Mat2d.data_type)
-    # print(Mat3d.data_type)
-    # print(Mat.data_type)

@@ -28,6 +28,9 @@ class Vec2d(Vec):
     def __truediv__(self, scalar: float) -> 'Vec2d':
         return self._div_scalar(scalar)
 
+    def __eq__(self, other: 'Vec2d'):
+        return self._eq(other)
+
     @property
     def x(self):
         return self[0]

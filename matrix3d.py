@@ -25,6 +25,9 @@ class Mat3d(SquareMat):
     def __sub__(self, mat: 'Mat3d'):
         return self._sub(mat)
 
+    def __eq__(self, other: 'Mat3d'):
+        return self._eq(other)
+
     def _mul(self, other: Union['Mat3d', float]):
         if isinstance(other, v3d.Vec3d):
             return self._mul_vector(other)
@@ -84,6 +87,12 @@ class Mat3d(SquareMat):
         res[2][0] = k
         res[2][1] = _l
         return res
+
+    @staticmethod
+    def reflection_around_point(p: Vec2d):
+        return Mat3d([[-1,     0,    0],
+                      [0,     -1,    0],
+                      [2*p.x, 2*p.y, 1]])
 
     @staticmethod
     def reflection_around_line(line: Tuple[float, float]):

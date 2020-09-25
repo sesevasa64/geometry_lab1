@@ -26,6 +26,9 @@ class Mat2d(SquareMat):
     def __sub__(self, mat: 'Mat2d'):
         return self._sub(mat)
 
+    def __eq__(self, other: 'Mat2d'):
+        return self._eq(other)
+
     def _mul(self, other: Union['Mat2d', float]):
         if isinstance(other, Vec2d):
             return self._mul_vector(other)
@@ -58,7 +61,7 @@ class Mat2d(SquareMat):
     @staticmethod
     def mirror_OX() -> 'Mat2d':
         return Mat2d([[1, 0],
-                     [0, -1]])
+                      [0, -1]])
 
     @staticmethod
     def mirror_OO() -> 'Mat2d':
